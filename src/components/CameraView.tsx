@@ -49,7 +49,13 @@ export default function CameraView({
       
       if (result && result.length > 0) {
         // Combine all detected text
-        const allText = result.map(item => item.text).join(' ');
+        const allText = Array.isArray(result)
+          ? result.map(item => {
+              if (typeof item === 'string') return item;
+              if (typeof item === 'object' && item && 'text' in item) return (item as any).text;
+              return '';
+            }).join(' ')
+          : typeof result === 'string' ? result : '';
         console.log('Detected text:', allText);
         
         // Parse the text to extract gas amount and unit

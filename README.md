@@ -37,7 +37,7 @@ A React Native Expo application that uses camera-based OCR to detect gas pump re
 1. Clone the repository
 2. Navigate to the project directory:
    ```bash
-   cd mixmaster-app
+   cd mixmaster
    ```
 3. Install dependencies:
    ```bash
