@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "MixMaster",
+    "slug": "mixmaster-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to detect gas pump readings for calculating 2-stroke oil mixing ratios.",
+        "NSPhotoLibraryUsageDescription": "This app may save photos for text recognition processing."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow MixMaster to access your camera to detect gas pump readings."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow MixMaster to access your photo library for text recognition processing.",
+          "savePhotosPermission": "Allow MixMaster to save photos for processing.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ]
+  }
+}
