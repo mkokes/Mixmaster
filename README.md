@@ -85,7 +85,8 @@ If automatic detection fails:
 
 ### Key Dependencies
 - `expo-camera`: Camera functionality and permissions
-- `react-native-text-recognition`: OCR text detection
+- `expo-image-manipulator`: Image processing for OCR
+- Google Vision API: Cloud-based OCR text detection
 - `@react-native-picker/picker`: Ratio selection interface
 - `@expo/vector-icons`: UI icons
 

@@ -5,6 +5,8 @@ import {
   Alert,
   SafeAreaView,
   Platform,
+  Pressable,
+  Text,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
@@ -14,6 +16,8 @@ import ResultsDisplay from './components/ResultsDisplay';
 import ManualInput from './components/ManualInput';
 import { MixingRatio, DetectedReading, CalculationResult } from './types';
 import { calculateOilAmount } from './utils/calculations';
+import { testParsingLogic } from './utils/testVisionAPI';
+import { performTextRecognition } from './services/textRecognitionService';
 
 const MIXING_RATIOS: MixingRatio[] = [
   { ratio: '50:1', value: 50 },
@@ -76,6 +80,42 @@ export default function MixMasterApp() {
     setShowManualInput(false);
   };
 
+  const handleTestParsing = () => {
+    console.log('🧪 Running parsing logic test...');
+    testParsingLogic();
+    Alert.alert(
+      'Parsing Test Complete',
+      'Check the console/logs for detailed results. This tests the gas pump text parsing without using the Vision API.',
+      [{ text: 'OK' }]
+    );
+  };
+
+  const handleTestVisionAPI = async () => {
+    try {
+      setIsProcessing(true);
+      console.log('🧪 Testing Vision API with mock data...');
+
+      // Test with mock data first to verify the API is working
+      const mockResults = await performTextRecognition('test-image-uri', true);
+      console.log('✅ Mock test results:', mockResults);
+
+      Alert.alert(
+        'Vision API Test',
+        `Mock test completed successfully!\n\nResults: ${mockResults.join(', ')}\n\nCheck console for detailed logs. To test with real images, take a photo using the camera.`,
+        [{ text: 'OK' }]
+      );
+    } catch (error) {
+      console.error('❌ Vision API test failed:', error);
+      Alert.alert(
+        'Vision API Test Failed',
+        `Error: ${error.message}\n\nThis might be normal if testing without a real image. Try taking a photo with the camera for a real test.`,
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   if (hasCameraPermission === null) {
     return <View style={styles.container} />;
   }
@@ -105,6 +145,15 @@ export default function MixMasterApp() {
                 selectedRatio={selectedRatio}
                 onRatioChange={setSelectedRatio}
               />
+
+              {/* Temporary test buttons - remove after testing */}
+              <Pressable style={styles.testButton} onPress={handleTestParsing}>
+                <Text style={styles.testButtonText}>🧪 Test Parsing Logic</Text>
+              </Pressable>
+
+              <Pressable style={[styles.testButton, styles.testButtonSecondary]} onPress={handleTestVisionAPI}>
+                <Text style={styles.testButtonText}>🔍 Test Vision API</Text>
+              </Pressable>
             </View>
           </>
         ) : (
@@ -142,5 +191,22 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingHorizontal: 20,
+  },
+  testButton: {
+    backgroundColor: 'rgba(0, 150, 255, 0.8)',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  testButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  testButtonSecondary: {
+    backgroundColor: 'rgba(255, 150, 0, 0.8)',
+    marginTop: 8,
   },
 });

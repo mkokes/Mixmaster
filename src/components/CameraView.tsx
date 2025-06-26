@@ -9,12 +9,11 @@ import {
 } from 'react-native';
 import { CameraView as ExpoCameraView, CameraType, FlashMode } from 'expo-camera';
 import { Flashlight, FlashlightOff, RotateCcw, Camera as CameraIcon } from 'lucide-react-native';
-import TextRecognition from 'react-native-text-recognition';
-import { Button } from './ui/button';
+import { performTextRecognition } from '../services/textRecognitionService';
 import { DetectedReading } from '../types';
 import { parseGasPumpReading } from '../utils/calculations';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get('window');
 
 interface CameraViewProps {
   onTextDetected: (reading: DetectedReading) => void;
@@ -44,18 +43,12 @@ export default function CameraView({
         skipProcessing: false,
       });
 
-      // Perform text recognition
-      const result = await TextRecognition.recognize(photo.uri);
-      
-      if (result && result.length > 0) {
+      // Perform text recognition using our new service
+      const textResults = await performTextRecognition(photo.uri, false); // Using real Google Vision API
+
+      if (textResults && textResults.length > 0) {
         // Combine all detected text
-        const allText = Array.isArray(result)
-          ? result.map(item => {
-              if (typeof item === 'string') return item;
-              if (typeof item === 'object' && item && 'text' in item) return (item as any).text;
-              return '';
-            }).join(' ')
-          : typeof result === 'string' ? result : '';
+        const allText = textResults.join(' ');
         console.log('Detected text:', allText);
         
         // Parse the text to extract gas amount and unit

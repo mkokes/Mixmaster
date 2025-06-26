@@ -35,11 +35,14 @@
         "android.permission.ACCESS_MEDIA_LOCATION"
       ],
       "package": "com.mkokes.mixmasterapp",
+      "compileSdkVersion": 35,
+      "targetSdkVersion": 35,
+      "buildToolsVersion": "35.0.0",
       "gradleProperties": {
-        "TextRecognition_compileSdkVersion": "35",
-        "TextRecognition_buildToolsVersion": "35.0.0",
-        "TextRecognition_targetSdkVersion": "35",
-        "TextRecognition_minSdkVersion": "24"
+        "android.compileSdkVersion": "35",
+        "android.buildToolsVersion": "35.0.0",
+        "android.targetSdkVersion": "35",
+        "android.minSdkVersion": "24"
       }
     },
     "web": {
